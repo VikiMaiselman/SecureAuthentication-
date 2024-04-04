@@ -1,17 +1,69 @@
+import { Button, FormLabel, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 
-// import bgImage from "public/assets/images/bg-family-saving-money.png";
-
 const AuthPageContainer = styled("div")({
-  height: "200px",
-  background: "url('assets/images/bg-family-saving-money.png')",
-  //   backgroundColor: "red",
-  color: "red",
-  fontSize: "2rem",
+  height: "80vh",
+  width: "100%",
+  //   background:
+  //     "linear-gradient(to right, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.4) 50%,rgba(255, 255, 255, 0.8) 50%)",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+});
+
+const AuthBackground = styled("img")({
+  width: "auto",
+  height: "100%",
+  position: "absolute",
+  right: 0,
+  top: 0,
+  zIndex: -9,
+  //   paddingLeft: "500px",
+  boxSizing: "border-box",
+  boxShadow: "-600px -160px white inset",
+  //   filter: "drop-shadow(-7mm -6mm 4mm rgb(255, 255, 255))",
+  //   background:
+  //     "linear-gradient(to right, rgba(255,255,255,0.8) 10px, rgba(255,255,255,0.4) 240px,rgba(255, 255, 255, 1) 290px)",
+  //   backgroundRepeat: "no-repeat",
+  //   opacity: 0.3,
+  //   filter: "blur(1px)",
+});
+
+const AuthForm = styled("div")({
+  width: "35rem",
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
+  //   alignItems: "center",
+  justifyContent: "center",
+  borderRadius: "10px",
+  background: "white",
+  opacity: "0.8",
 });
 
 export default function Auth() {
-  return <AuthPageContainer>text</AuthPageContainer>;
+  return (
+    <AuthPageContainer>
+      <AuthBackground src="images/bg-family-saving-money.png" />
+
+      <Typography variant="h4">Experience the future of banking</Typography>
+
+      <AuthForm>
+        <Typography variant="h3" sx={{ color: "blue" }}>
+          Let's Get Started
+        </Typography>
+        <FormLabel forHtml="email">Email</FormLabel>
+        <TextField id="email"></TextField>
+
+        <FormLabel forHtml="pswd">Password</FormLabel>
+        <TextField id="pswd"></TextField>
+
+        <Button variant="contained" sx={{ opacity: 1 }}>
+          Sign Up
+        </Button>
+      </AuthForm>
+    </AuthPageContainer>
+  );
 }
 
 /*  <img
