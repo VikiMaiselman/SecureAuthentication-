@@ -1,6 +1,11 @@
+import React from "react";
 import { Box, Button, FormLabel, Tab, Tabs, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/system";
-import React from "react";
+
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/material.css";
+
+import "react-phone-input-2/lib/bootstrap.css";
 
 const AuthPageContainer = styled("div")({
   height: "80vh",
@@ -33,12 +38,16 @@ const Overlay = styled("div")({
 });
 
 const AuthForm = styled("div")({
-  width: "30rem",
+  width: "25rem",
   height: "100%",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  justifyContent: "center",
+  justifyContent: "flex-start",
+
+  paddingTop: "5em",
+  paddingLeft: "2.5em",
+  paddingRight: "1.5em",
   position: "relative",
   zIndex: 6,
   borderRadius: "10px",
@@ -85,28 +94,42 @@ export default function Auth() {
       </div>
 
       <AuthForm>
-        <Typography variant="h3" sx={{ color: "blue" }}>
+        <Typography variant="h3" sx={{ color: "blue", alignSelf: "center" }}>
           Let's Get Started
         </Typography>
 
         {/* <Tabs value={value} onChange={handleChange} centered> */}
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs value={activeTab} onChange={handleChangeTab} centered>
+        <Box sx={{ borderBottom: 1, borderColor: "divider", alignSelf: "center" }}>
+          <Tabs value={activeTab} onChange={handleChangeTab}>
             <Tab id="signup" label="Sign Up" sx={{ border: "none" }} />
             <Tab id="signin" label="Sign In" />
           </Tabs>
         </Box>
 
-        <FormLabel forHtml="email">Email</FormLabel>
-        <TextField id="email" sx={{ width: "75%", backgroundColor: "rgb(255, 255, 255)" }}></TextField>
+        <FormLabel forHtml="email" sx={{ alignSelf: "start" }}>
+          Email
+        </FormLabel>
+        <TextField
+          id="email"
+          sx={{ width: "100%", backgroundColor: "rgb(255, 255, 255)", marginBottom: "1em" }}
+        ></TextField>
 
-        <FormLabel forHtml="pswd">Password</FormLabel>
-        <TextField id="pswd" sx={{ width: "75%", backgroundColor: "rgb(255, 255, 255)" }}></TextField>
+        <FormLabel forHtml="pswd" sx={{ alignSelf: "start" }}>
+          Password
+        </FormLabel>
+        <TextField
+          id="pswd"
+          sx={{ width: "100%", backgroundColor: "rgb(255, 255, 255)", marginBottom: "1em" }}
+        ></TextField>
 
-        {activeTab === 0 && (
+        {!activeTab && (
           <>
-            <FormLabel forHtml="phone">Phone Number</FormLabel>
-            <TextField id="phone" sx={{ width: "75%", backgroundColor: "rgb(255, 255, 255)" }}></TextField>
+            <FormLabel forHtml="phone" sx={{ alignSelf: "start" }}>
+              Phone Number
+            </FormLabel>
+            <PhoneInput id="phone" country={"il"} inputStyle={{ width: "100%", marginBottom: "1em" }} />
+
+            {/* value={this.state.phone} onChange={(phone) => this.setState({ phone })} */}
           </>
         )}
 
