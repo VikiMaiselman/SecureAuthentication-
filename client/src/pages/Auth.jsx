@@ -100,8 +100,8 @@ export default function Auth() {
 
         {/* <Tabs value={value} onChange={handleChange} centered> */}
         <Box sx={{ borderBottom: 1, borderColor: "divider", alignSelf: "center" }}>
-          <Tabs value={activeTab} onChange={handleChangeTab}>
-            <Tab id="signup" label="Sign Up" sx={{ border: "none" }} />
+          <Tabs variant="text" value={activeTab} onChange={handleChangeTab}>
+            <Tab id="signup" label="Sign Up" sx={{ "&:focus": { outline: "none" } }} />
             <Tab id="signin" label="Sign In" />
           </Tabs>
         </Box>
