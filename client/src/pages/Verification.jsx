@@ -44,6 +44,7 @@ export default function Verification() {
 
   const handleClickVerify = async (e) => {
     const data = location.state;
+    console.log(data);
     const updatedData = { ...data, otp: otpDigits.join("") };
     const response = await verify(updatedData);
     console.log(response);

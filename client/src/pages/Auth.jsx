@@ -95,8 +95,9 @@ export default function Auth() {
       phone: `+${userData.phone}`,
       action: `${activeTab === 0 ? "signup" : "login"}`,
     };
+
     const response = await signup(data);
-    console.log(response, data, userData.phone, userData);
+    console.log(response, data);
     if (response === "pending") return navigate("/verification", { state: data, replace: true });
     // show error message
     return navigate("/sign-up");
