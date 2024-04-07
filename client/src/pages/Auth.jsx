@@ -56,7 +56,6 @@ export default function Auth() {
   const handleClick = async () => {
     const data = composeDataForBackend(userData, activeTab);
     const response = await signup(data);
-    console.log(response, data);
     if (response === "pending") {
       isBeingVerified(response);
       return navigate("/verification", { state: data, replace: true });

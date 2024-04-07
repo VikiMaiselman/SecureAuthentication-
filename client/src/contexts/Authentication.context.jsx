@@ -11,6 +11,7 @@ export default function AuthProvider({ children }) {
     username: "",
     isAuthenticated: "",
     isBeingVerified: "",
+    balance: "",
   });
 
   const checkStatus = async () => {
@@ -18,7 +19,12 @@ export default function AuthProvider({ children }) {
       const result = await checkAuthStatus();
       console.log(result);
       setUser((prevSt) => {
-        return { ...prevSt, isAuthenticated: result.isAuthenticated, username: result.user ? result.user : "" };
+        return {
+          ...prevSt,
+          isAuthenticated: result.isAuthenticated,
+          username: result.user ? result.user : "",
+          balance: result.balance ? result.balance : "",
+        };
       });
     } catch (error) {
       Swal.fire({

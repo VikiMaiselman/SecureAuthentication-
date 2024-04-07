@@ -1,5 +1,7 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import {
+  Box,
   CssBaseline,
   Drawer,
   List,
@@ -11,6 +13,7 @@ import {
 } from "@mui/material";
 import GridViewIcon from "@mui/icons-material/GridView";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 
 import { DRAWER_WIDTH } from "../util/config.js";
 
@@ -18,7 +21,12 @@ import { superLightBLue, lightBlue, middleBlue } from "../global-styles/Colors.j
 import { useAuth } from "../contexts/Authentication.context.jsx";
 
 export default function LayoutMain({ children }) {
-  const { user } = useAuth();
+  const { user, checkStatus } = useAuth();
+
+  React.useEffect(() => {
+    checkStatus();
+  }, []);
+
   return (
     <>
       <div>
@@ -52,31 +60,35 @@ export default function LayoutMain({ children }) {
                 Available Balance:
               </Typography>
               <Typography variant="h5" sx={{ paddingLeft: "1em" }}>
-                12,500 USD
+                {user.balance.toFixed(2)} USD
               </Typography>
             </div>
           )}
 
           <List sx={{ width: "100%" }}>
-            <ListItem component={Link} to={"/dashboard"} sx={{ background: middleBlue, marginY: "1em" }}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <GridViewIcon sx={{ color: "white" }} />
-                </ListItemIcon>
-                <ListItemText primary={"Overview"} sx={{ color: "white" }} />
-              </ListItemButton>
-            </ListItem>
-            <ListItem component={Link} to={"/create-transaction"} sx={{ background: middleBlue, marginY: "1em" }}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <AccountBalanceWalletIcon sx={{ color: "white" }} />
-                </ListItemIcon>
-                <ListItemText primary={"Create Transaction"} sx={{ color: "white" }} />
-              </ListItemButton>
-            </ListItem>
+            {user.isAuthenticated && (
+              <>
+                <ListItem component={Link} to={"/dashboard"} sx={{ background: middleBlue, marginY: "1em" }}>
+                  <ListItemButton sx={{ transition: "all 0.4s ease-in-out", "&:hover": { transform: "scale(1.1)" } }}>
+                    <ListItemIcon>
+                      <GridViewIcon sx={{ color: "white" }} />
+                    </ListItemIcon>
+                    <ListItemText primary={"Overview"} sx={{ color: "white" }} />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem component={Link} to={"/create-transaction"} sx={{ background: middleBlue, marginY: "1em" }}>
+                  <ListItemButton sx={{ transition: "all 0.4s ease-in-out", "&:hover": { transform: "scale(1.1)" } }}>
+                    <ListItemIcon>
+                      <AccountBalanceWalletIcon sx={{ color: "white" }} />
+                    </ListItemIcon>
+                    <ListItemText primary={"Create Transaction"} sx={{ color: "white" }} />
+                  </ListItemButton>
+                </ListItem>
+              </>
+            )}
             {!user.isAuthenticated && (
               <ListItem component={Link} to={"/sign-up"} sx={{ background: middleBlue, marginY: "1em" }}>
-                <ListItemButton>
+                <ListItemButton sx={{ transition: "all 0.4s ease-in-out", "&:hover": { transform: "scale(1.1)" } }}>
                   {/* <ListItemIcon>{getIconForAppbar(index)}</ListItemIcon> */}
                   <ListItemText primary={"Sign Up"} sx={{ color: "white" }} />
                 </ListItemButton>
@@ -85,7 +97,35 @@ export default function LayoutMain({ children }) {
           </List>
         </Drawer>
       </div>
-      {children}
+      <Box
+        height={"100vh"}
+        display="flex"
+        flexDirection={"column"}
+        alignItems="start"
+        justifyContent="flex-start"
+        marginLeft={`${DRAWER_WIDTH}px`}
+      >
+        {user.isAuthenticated && (
+          <div style={{ width: "100%", display: "flex", justifyContent: "space-evenly", alignItems: "center" }}>
+            <Typography variant="body1" sx={{ marginRight: "auto" }}>
+              Hello, {user.username}
+            </Typography>
+            <Link
+              to="/logout"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                transition: "all 0.4s ease-in-out",
+                "&:hover": { transform: "scale(1.2)" },
+              }}
+            >
+              <AccountCircleOutlinedIcon />
+              Log Out
+            </Link>
+          </div>
+        )}
+        {children}
+      </Box>
     </>
   );
 }

@@ -6,6 +6,8 @@ import Home from "../pages/Home";
 import Auth from "../pages/Auth";
 import Verification from "../pages/Verification";
 import Logout from "../pages/Logout";
+import TransactionForm from "../pages/TransactionForm";
+
 import { useAuth } from "../contexts/Authentication.context";
 
 export default function AppRoutes() {
@@ -13,13 +15,27 @@ export default function AppRoutes() {
 
   return (
     <Routes>
+      <Route path="/" index element={<LayoutMain>{/* <Home /> */}</LayoutMain>} />
       <Route
-        path="/"
+        path="/dashboard"
         index
         element={
           <LayoutMain>
             <Home />
           </LayoutMain>
+        }
+      />
+      <Route
+        path="/create-transaction"
+        index
+        element={
+          user.isAuthenticated ? (
+            <LayoutMain>
+              <TransactionForm />
+            </LayoutMain>
+          ) : (
+            <Navigate to="/" />
+          )
         }
       />
       <Route
