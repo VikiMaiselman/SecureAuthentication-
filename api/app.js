@@ -9,6 +9,7 @@ import passport from "passport";
 
 import { db, initDb as initializeMongoDatabase } from "./dbs/mongo-db.js";
 import { verificationRoutes } from "./routes/verification-route.js";
+import { transactionRoutes } from "./routes/transaction-route.js";
 
 // const accountSid = process.env.TWILIO_ACCOUNT_SID;
 // const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -54,6 +55,7 @@ initializeMongoDatabase();
 
 // Routes
 app.use(verificationRoutes);
+app.use(transactionRoutes);
 
 app // Listening to incoming requests
   .listen(port, () => console.log(`Server's up. Listening on port ${port}`));

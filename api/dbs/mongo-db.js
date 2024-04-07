@@ -42,6 +42,7 @@ async function initDb() {
     username: String,
     password: String,
     phone: String,
+    balance: Number,
   });
 
   /* create mongodb models */
