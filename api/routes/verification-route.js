@@ -91,14 +91,12 @@ router.post("/verification", async (req, res) => {
   }
 
   passport.authenticate("local")(req, res, function () {
-    console.log("verify", req.isAuthenticated());
     // res.send(verificationCheck.status);
     res.send("approved");
   });
 });
 
 router.get("/logout", (req, res, next) => {
-  console.log("hit the ground");
   req.logout(function (err) {
     if (err) {
       return next(err);
@@ -108,7 +106,8 @@ router.get("/logout", (req, res, next) => {
 });
 
 router.get("/auth-status", async (req, res) => {
-  res.send({ isAuthenticated: req.isAuthenticated(), user: req.user?.username, balance: req.user?.balance });
+  console.log(req.user);
+  res.send({ isAuthenticated: req.isAuthenticated(), user: req.user });
 });
 
 // export const getCurrentUser = async (req, res) => {
