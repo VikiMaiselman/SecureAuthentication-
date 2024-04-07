@@ -12,6 +12,7 @@ export default function AuthProvider({ children }) {
     isAuthenticated: "",
     isBeingVerified: "",
     balance: "",
+    id: ",",
   });
 
   const checkStatus = async () => {
@@ -22,8 +23,9 @@ export default function AuthProvider({ children }) {
         return {
           ...prevSt,
           isAuthenticated: result.isAuthenticated,
-          username: result.user ? result.user : "",
-          balance: result.balance ? result.balance : "",
+          username: result.user ? result.user.username : "",
+          balance: result.user ? result.user.balance : "",
+          id: result.user ? result.user._id : "",
         };
       });
     } catch (error) {
@@ -40,7 +42,14 @@ export default function AuthProvider({ children }) {
   };
 
   React.useEffect(() => {
-    checkStatus();
+    const updUserStatus = async () => {
+      try {
+        await checkStatus();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    updUserStatus();
   }, []);
 
   const isBeingVerified = (status) => {

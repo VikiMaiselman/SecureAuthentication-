@@ -22,9 +22,18 @@ import { useAuth } from "../contexts/Authentication.context.jsx";
 
 export default function LayoutMain({ children }) {
   const { user, checkStatus } = useAuth();
+  //   const [balance, setBalance] = React.useState(0);
 
   React.useEffect(() => {
-    checkStatus();
+    const updUserStatus = async () => {
+      try {
+        await checkStatus();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    updUserStatus();
+    // setBalance(() => user.balance);
   }, []);
 
   return (
@@ -60,7 +69,7 @@ export default function LayoutMain({ children }) {
                 Available Balance:
               </Typography>
               <Typography variant="h5" sx={{ paddingLeft: "1em" }}>
-                {user.balance.toFixed(2)} USD
+                {user.balance.toFixed?.(2)} USD
               </Typography>
             </div>
           )}

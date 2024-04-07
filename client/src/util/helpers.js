@@ -69,3 +69,22 @@ export async function createTransaction(txData) {
     });
   }
 }
+
+export async function getTransactions() {
+  try {
+    const result = await axios.get(`${URL}/transactions`, { withCredentials: true }, HEADERS);
+    console.log(result.data);
+    return result.data;
+  } catch (error) {
+    console.error(error);
+    Swal.fire({
+      title: "Ooops...",
+      text: error.response.data,
+      icon: "error",
+      confirmButtonText: "Please, try again.",
+      confirmButtonColor: middleBlue,
+      color: darkBlue,
+      iconColor: "red",
+    });
+  }
+}

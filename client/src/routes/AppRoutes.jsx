@@ -20,9 +20,13 @@ export default function AppRoutes() {
         path="/dashboard"
         index
         element={
-          <LayoutMain>
-            <Home />
-          </LayoutMain>
+          user.isAuthenticated ? (
+            <LayoutMain>
+              <Home />
+            </LayoutMain>
+          ) : (
+            <Navigate to="/" />
+          )
         }
       />
       <Route
