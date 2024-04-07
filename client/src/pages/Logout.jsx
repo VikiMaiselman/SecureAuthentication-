@@ -7,7 +7,11 @@ export default function Logout() {
   const navigate = useNavigate();
   useEffect(() => {
     const logOut = async () => {
-      await logout();
+      try {
+        await logout();
+      } catch (error) {
+        console.error(error);
+      }
     };
     logOut();
     navigate("/sign-up", { replace: true });

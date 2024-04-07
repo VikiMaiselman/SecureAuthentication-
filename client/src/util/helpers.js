@@ -2,6 +2,15 @@ import axios from "axios";
 
 import { URL, HEADERS } from "./config.js";
 
+export function composeDataForBackend(userData, activeTab) {
+  return {
+    ...userData,
+    username: userData.email,
+    phone: `+${userData.phone}`,
+    action: `${activeTab === 0 ? "signup" : "login"}`,
+  };
+}
+
 export async function signup(data) {
   console.log(data);
   try {
@@ -28,9 +37,17 @@ export async function verify(fullData) {
 
 export async function logout() {
   try {
-    await axios.get(`${url}/logout`, { withCredentials: true }, headers);
+    await axios.get(`${URL}/logout`, { withCredentials: true }, HEADERS);
   } catch (error) {
     console.error(error);
   }
-  setIsAuthenticated(false);
+}
+
+export async function checkAuthStatus() {
+  try {
+    const result = await axios.get(`${URL}/auth-status`, { withCredentials: true }, HEADERS);
+    return result.data;
+  } catch (error) {
+    console.error(error);
+  }
 }
