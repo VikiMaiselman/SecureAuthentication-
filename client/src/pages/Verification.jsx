@@ -1,20 +1,9 @@
-import styled from "@emotion/styled";
-import { Button, Card, CardActions, CardContent, TextField, Typography } from "@mui/material";
+import { CardActions, CardContent, Typography } from "@mui/material";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { verify } from "../util/helpers";
-
-const VerificationBackground = styled("div")({
-  width: "100%",
-  height: "100%",
-  position: "absolute",
-  right: 0,
-  top: 0,
-  zIndex: -9,
-  background: "linear-gradient(to right bottom, rgba(255,255,255,1), #D0E3FF)",
-  filter: "blur(1px)",
-});
+import { DigitSlot, StyledButton, StyledCard, StyledHeader, VerificationBackground } from "./VerificationStyles";
 
 export default function Verification() {
   const [otpDigits, setOtpDigits] = React.useState(Array.from({ length: 6 }, () => ""));
@@ -22,7 +11,7 @@ export default function Verification() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  console.log(location);
+  // inputRefs.current[0].focus();
 
   const handleChange = (idx, value) => {
     const updatedDigits = [...otpDigits];
@@ -35,8 +24,7 @@ export default function Verification() {
     }
   };
 
-  const handleBackspace = (key, idx, value) => {
-    // Move cursor to the previous input (if not at the first slot)
+  const handleMoveCursorOnBackspacePress = (key, idx, value) => {
     if (key === "Backspace" && idx > 0 && value.length === 0) {
       inputRefs.current[idx - 1].focus();
     }
@@ -56,41 +44,35 @@ export default function Verification() {
   return (
     <>
       <VerificationBackground />
-      <Card sx={{ minWidth: 275, padding: "5em 2.5em", borderRadius: "10px", marginLeft: "auto", marginRight: "auto" }}>
+      <StyledCard>
         <CardContent>
-          {/* sx={{ fontSize: 14 }} */}
-          <Typography variant="h5" sx={{ color: "#4A435D", fontWeight: 600 }} gutterBottom>
+          <StyledHeader variant="h5" gutterBottom>
             Two-Factor Authentication
-          </Typography>
+          </StyledHeader>
 
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
             Enter Two-factor <br /> Authentication Password
           </Typography>
 
           {React.Children.toArray(
-            otpDigits.map((digit, idx) => {
+            otpDigits.map((_, idx) => {
               return (
-                <TextField
-                  sx={{ width: "2.5em" }}
+                <DigitSlot
                   inputRef={(ref) => (inputRefs.current[idx] = ref)}
                   onChange={(e) => handleChange(idx, e.target.value)}
-                  onKeyDown={(e) => handleBackspace(e.key, idx, e.target.value)}
+                  onKeyDown={(e) => handleMoveCursorOnBackspacePress(e.key, idx, e.target.value)}
                   inputProps={{ maxLength: 1 }}
-                ></TextField>
+                />
               );
             })
           )}
         </CardContent>
         <CardActions>
-          <Button
-            variant="contained"
-            sx={{ width: "75%", backgroundColor: "#1A3496", marginLeft: "auto", marginRight: "auto" }}
-            onClick={handleClickVerify}
-          >
+          <StyledButton variant="contained" onClick={handleClickVerify}>
             Verify
-          </Button>
+          </StyledButton>
         </CardActions>
-      </Card>
+      </StyledCard>
     </>
   );
 }

@@ -13,9 +13,9 @@ export default function AppRoutes() {
         path="/"
         index
         element={
-          <Layout>
-            <Home />
-          </Layout>
+          // <Layout>
+          <Home />
+          // </Layout>
         }
       />
       {/* <Route path="/logout" element={<Logout />} /> */}

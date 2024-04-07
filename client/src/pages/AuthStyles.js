@@ -1,6 +1,8 @@
 import { Button, FormLabel, Tab, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 
+import { lightBlue, middleBlue, darkBlue } from "../global-styles/Colors";
+
 export const AuthPageContainer = styled("div")({
   height: "80vh",
   width: "100%",
@@ -32,7 +34,7 @@ export const Overlay = styled("div")({
 });
 
 export const PageHeaderText = styled(Typography)({
-  backgroundImage: "linear-gradient(45deg, #4A435D, #1A3496, #427EEE)",
+  backgroundImage: `linear-gradient(45deg, ${darkBlue}, ${middleBlue}, ${lightBlue})`,
   backgroundClip: "text",
   textFillColor: "transparent",
   fontWeight: "700",
@@ -46,7 +48,6 @@ export const AuthForm = styled("div")({
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "flex-start",
-
   paddingTop: "5em",
   paddingLeft: "2.5em",
   paddingRight: "1.5em",
@@ -58,7 +59,7 @@ export const AuthForm = styled("div")({
 
 export const StyledTab = styled(Tab)({
   color: "#1A3496",
-  "&:focus": { outline: "none", color: "#1A3496" },
+  "&:focus": { outline: "none", color: middleBlue },
 });
 
 export const StyledFormLabel = styled(FormLabel)({
@@ -73,5 +74,5 @@ export const StyledTextField = styled(TextField)({
 
 export const StyledButton = styled(Button)({
   width: "75%",
-  backgroundColor: "#1A3496",
+  backgroundColor: middleBlue,
 });
