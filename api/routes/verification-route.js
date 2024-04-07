@@ -47,6 +47,7 @@ router.post("/sign-up", async (req, res, next) => {
     try {
       const result = await User.authenticate()(username, password);
       userPhoneStoredInDB = result.user.phone;
+      console.log("Log in", result);
       if (result.error) throw new Error("IncorrectPasswordError: Password or username is incorrect");
     } catch (error) {
       console.log(error);
@@ -69,19 +70,23 @@ router.post("/sign-up", async (req, res, next) => {
 });
 
 router.post("/verification", async (req, res) => {
-  let verificationCheck;
+  let verificationCheck, userPhoneStoredInDB;
   const { username, password, phone, action, otp } = req.body;
   console.log("in verification", username, password, phone, action, otp);
 
   try {
+    const result = await User.authenticate()(username, password);
+    userPhoneStoredInDB = result.user.phone;
+
     verificationCheck = await client.verify.v2
       .services(process.env.TWILIO_SERVICE_SID)
-      .verificationChecks.create({ to: phone, code: otp });
+      .verificationChecks.create({ to: userPhoneStoredInDB, code: otp });
     console.log(verificationCheck.status);
     if (verificationCheck.status !== "approved") {
       throw new "Invalid OTP!"();
     }
   } catch (error) {
+    console.error(error);
     return res.status(401).send(false);
   }
 
@@ -104,6 +109,7 @@ router.post("/verification", async (req, res) => {
 });
 
 router.get("/logout", (req, res, next) => {
+  console.log("hit the ground");
   req.logout(function (err) {
     if (err) {
       return next(err);
@@ -112,9 +118,9 @@ router.get("/logout", (req, res, next) => {
   });
 });
 
-const getStatus = async (req, res) => {
+router.get("/auth-status", async (req, res) => {
   res.send(req.isAuthenticated());
-};
+});
 
 // export const getCurrentUser = async (req, res) => {
 //   res.send({ id: req.user?._id, username: req.user?.username });
