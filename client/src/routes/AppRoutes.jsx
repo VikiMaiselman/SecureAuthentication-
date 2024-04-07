@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import Layout from "../layouts/Layout";
+import LayoutMain from "../layouts/LayoutMain";
 import Home from "../pages/Home";
 import Auth from "../pages/Auth";
 import Verification from "../pages/Verification";
@@ -12,7 +13,15 @@ export default function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/" index element={<Home />} />
+      <Route
+        path="/"
+        index
+        element={
+          <LayoutMain>
+            <Home />
+          </LayoutMain>
+        }
+      />
       <Route
         path="/sign-up"
         element={

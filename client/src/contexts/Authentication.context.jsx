@@ -15,10 +15,10 @@ export default function AuthProvider({ children }) {
 
   const checkStatus = async () => {
     try {
-      const isAuth = await checkAuthStatus();
-      console.log(isAuth);
+      const result = await checkAuthStatus();
+      console.log(result);
       setUser((prevSt) => {
-        return { ...prevSt, isAuthenticated: isAuth };
+        return { ...prevSt, isAuthenticated: result.isAuthenticated, username: result.user ? result.user : "" };
       });
     } catch (error) {
       Swal.fire({
@@ -55,7 +55,7 @@ export default function AuthProvider({ children }) {
     } catch (error) {
       Swal.fire({
         title: "Ooops...",
-        text: `You were not registered. ${error.response.statusText}`,
+        text: error.response.data.message || error.response.data,
         icon: "error",
         confirmButtonText: "Please, try again.",
         confirmButtonColor: middleBlue,
@@ -71,7 +71,7 @@ export default function AuthProvider({ children }) {
     } catch (error) {
       Swal.fire({
         title: "Ooops...",
-        text: error,
+        text: error.response.data,
         icon: "error",
         confirmButtonText: "Please, try again.",
         confirmButtonColor: middleBlue,
