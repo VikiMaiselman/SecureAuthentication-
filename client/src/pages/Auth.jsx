@@ -5,7 +5,7 @@ import { Box, Typography, Tabs } from "@mui/material";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/bootstrap.css";
 
-import { composeDataForBackend, signup } from "../util/helpers.js";
+import { composeDataForBackend } from "../util/helpers.js";
 import {
   AuthBackground,
   AuthForm,
@@ -17,8 +17,10 @@ import {
   StyledTab,
   StyledTextField,
 } from "./AuthStyles.js";
+import { useAuth } from "../contexts/Authentication.context.jsx";
 
 export default function Auth() {
+  const { checkStatus, isBeingVerified, signup } = useAuth();
   const [activeTab, setActiveTab] = React.useState(0);
   const [userData, setUserData] = React.useState({
     email: "",
@@ -29,6 +31,7 @@ export default function Auth() {
 
   const handleChangeTab = (e, newValue) => {
     setActiveTab(() => newValue);
+    checkStatus();
   };
 
   const handleChangeUserData = (e) => {
@@ -54,7 +57,10 @@ export default function Auth() {
     const data = composeDataForBackend(userData, activeTab);
     const response = await signup(data);
     console.log(response, data);
-    if (response === "pending") return navigate("/verification", { state: data, replace: true });
+    if (response === "pending") {
+      isBeingVerified(response);
+      return navigate("/verification", { state: data, replace: true });
+    }
     // show error message
     return navigate("/sign-up");
   };

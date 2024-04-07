@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
-
 import { styled } from "@mui/system";
+
+import logo from "../images/ironvestLogo.svg";
 
 export const LayoutContainer = styled("div")({
   minHeight: "90vh",
@@ -24,7 +25,7 @@ export default function Layout({ children }) {
         <Typography variant={"h3"}>myBank</Typography>
       </header>
       {children}
-      <footer>Powered by IronVest</footer>
+      <footer style={{ display: "flex", alignItems: "center" }}>Powered by &nbsp; {<img src={logo} />}</footer>
     </LayoutContainer>
   );
 }

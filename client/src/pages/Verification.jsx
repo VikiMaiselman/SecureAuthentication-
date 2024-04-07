@@ -2,12 +2,13 @@ import { CardActions, CardContent, Typography } from "@mui/material";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { verify } from "../util/helpers";
 import { DigitSlot, StyledButton, StyledCard, StyledHeader, VerificationBackground } from "./VerificationStyles";
+import { useAuth } from "../contexts/Authentication.context";
 
 export default function Verification() {
   const [otpDigits, setOtpDigits] = React.useState(Array.from({ length: 6 }, () => ""));
   const inputRefs = React.useRef([]);
+  const { isApproved, verify } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -32,11 +33,13 @@ export default function Verification() {
 
   const handleClickVerify = async (e) => {
     const data = location.state;
-    console.log(data);
     const updatedData = { ...data, otp: otpDigits.join("") };
     const response = await verify(updatedData);
-    console.log(response);
-    if (response === "approved") return navigate("/");
+
+    if (response === "approved") {
+      isApproved(response);
+      return navigate("/");
+    }
     // show error message
     return navigate("/sign-up");
   };

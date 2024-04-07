@@ -1,24 +1,18 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import Layout from "../layouts/Layout";
 import Home from "../pages/Home";
 import Auth from "../pages/Auth";
 import Verification from "../pages/Verification";
 import Logout from "../pages/Logout";
+import { useAuth } from "../contexts/Authentication.context";
 
 export default function AppRoutes() {
+  const { user } = useAuth();
+
   return (
     <Routes>
-      <Route
-        path="/"
-        index
-        element={
-          // <Layout>
-          <Home />
-          // </Layout>
-        }
-      />
-      {/* <Route path="/logout" element={<Logout />} /> */}
+      <Route path="/" index element={<Home />} />
       <Route
         path="/sign-up"
         element={
@@ -30,9 +24,13 @@ export default function AppRoutes() {
       <Route
         path="/verification"
         element={
-          <Layout>
-            <Verification />
-          </Layout>
+          user.isBeingVerified ? (
+            <Layout>
+              <Verification />
+            </Layout>
+          ) : (
+            <Navigate to="/" />
+          )
         }
       />
       <Route
@@ -43,7 +41,7 @@ export default function AppRoutes() {
           </Layout>
         }
       />
-      {/* <Route path="*" element={<Authenticate />} /> */}
+      <Route path="*" element={<Navigate to="/sign-up" />} />
     </Routes>
   );
 }

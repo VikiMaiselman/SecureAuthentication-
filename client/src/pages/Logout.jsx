@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { logout } from "../util/helpers";
+import { useAuth } from "../contexts/Authentication.context";
 
 export default function Logout() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
+
   useEffect(() => {
     const logOut = async () => {
       try {
@@ -14,6 +15,7 @@ export default function Logout() {
       }
     };
     logOut();
+
     navigate("/sign-up", { replace: true });
   }, []);
 
