@@ -47,8 +47,9 @@ app.use(
     cookie: {
       httpOnly: false,
       secure: false,
+
       // secure: true, // set this to true if you're using https
-      // sameSite: "none", // set this to 'none' if your site is served over https
+      sameSite: "none", // set this to 'none' if your site is served over https
       // other cookie settings
     },
   })
