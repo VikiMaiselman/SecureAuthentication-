@@ -46,10 +46,10 @@ app.use(
     // store: new RedisStore(options),
     cookie: {
       httpOnly: false,
-      secure: true,
+      // secure: true,
 
       // secure: true, // set this to true if you're using https
-      sameSite: true, // set this to 'none' if your site is served over https
+      // sameSite: "none", // set this to 'none' if your site is served over https
       // other cookie settings
     },
   })
