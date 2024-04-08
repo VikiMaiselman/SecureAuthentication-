@@ -32,6 +32,7 @@ export const signUp = async (req, res) => {
 
       passport.authenticate("local")(req, res, function () {
         // res.send(verificationCheck.status);
+        console.log("sending approved");
         return res.send("approved");
       });
     });
@@ -61,6 +62,7 @@ export const signUp = async (req, res) => {
     }
 
     passport.authenticate("local")(req, res, function () {
+      console.log("sending approved");
       res.send("approved");
     });
   }
