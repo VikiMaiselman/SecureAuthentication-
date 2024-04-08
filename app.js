@@ -16,6 +16,8 @@ import { transactionRoutes } from "./routes/transaction-route.js";
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.set("trust proxy", 1);
+
 // CORS (development stage only)
 app.use(
   cors({
@@ -47,9 +49,9 @@ app.use(
     cookie: {
       httpOnly: false,
       // secure: true,
-
+      maxAge: 1000 * 60 * 10,
       secure: true, // set this to true if you're using https
-      sameSite: "lax", // set this to 'none' if your site is served over https
+      sameSite: "none", // set this to 'none' if your site is served over https
       // other cookie settings
     },
   })
