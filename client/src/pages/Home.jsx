@@ -1,9 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Box, Button, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
+import { Box, List, ListItem, ListItemButton, ListItemIcon } from "@mui/material";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
 import { useAuth } from "../contexts/Authentication.context";
 import { getTransactions } from "../util/helpers";
+import { StyledListItemText, StyledSubheader, StyledTransaction } from "./HomeStyles";
 
 export default function Home() {
   const { user, updateBalance } = useAuth();
@@ -24,21 +25,26 @@ export default function Home() {
 
   return (
     <Box width={"100%"} my={4}>
-      <Typography variant="h6" sx={{ width: "fit-content", margin: 0, marginRight: "auto", padding: 0 }}>
-        Recent Transactions From: <span>Today</span>
-      </Typography>
+      <StyledSubheader variant="h6">
+        Recent Transactions From: <span style={{ color: "#F09479" }}>Today</span>
+      </StyledSubheader>
 
       {React.Children.toArray(
         txs?.map((tx) => {
-          console.log(tx, user);
           const amountTodisplay = tx.to === user.id ? `+${tx.amount}` : `-${tx.amount}`;
+          const colorOfMoney = tx.to === user.id ? "green" : "red";
           return (
             <List>
               <ListItem>
                 <ListItemButton>
-                  <ListItemIcon>{/* <InboxIcon /> */}</ListItemIcon>
-                  <ListItemText primary={tx.name} />
-                  <ListItemText primary={`${amountTodisplay} $`} />
+                  <ListItemIcon>
+                    <ReceiptLongIcon />
+                  </ListItemIcon>
+                  <StyledTransaction>
+                    <StyledListItemText primary={tx.name} />
+                    <StyledListItemText sx={{ color: colorOfMoney }} primary={`${amountTodisplay} $`} />
+                    <StyledListItemText primary={tx.to === user.id ? user.username : tx.to} />
+                  </StyledTransaction>
                 </ListItemButton>
               </ListItem>
             </List>

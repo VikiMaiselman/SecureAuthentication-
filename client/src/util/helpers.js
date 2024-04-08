@@ -100,7 +100,6 @@ export async function getTransactions() {
 export async function getUserBalance() {
   try {
     const result = await axios.get(`${URL}/balance`, { withCredentials: true }, HEADERS);
-    console.log(result.data);
     return result.data.balance;
   } catch (error) {
     console.error(error);

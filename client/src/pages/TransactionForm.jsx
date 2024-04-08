@@ -1,8 +1,10 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
 import React from "react";
+import { Button, Typography } from "@mui/material";
+
 import { useAuth } from "../contexts/Authentication.context";
 import { createTransaction } from "../util/helpers.js";
 import { useNavigate } from "react-router-dom";
+import { StyledContainer, StyledTextField } from "./TransactionFormStyled";
 
 export default function TransactionForm() {
   const { user } = useAuth();
@@ -30,10 +32,9 @@ export default function TransactionForm() {
 
   const handleChange = (e) => {
     let { name, value } = e.target;
+
     validate(name, value);
-
     if (name === "amount") value = +value;
-
     setTx((prevSt) => {
       return { ...prevSt, [name]: value };
     });
@@ -50,19 +51,18 @@ export default function TransactionForm() {
   };
 
   return (
-    <Box width={"100%"} display={"flex"} flexDirection={"column"} my={7}>
+    <StyledContainer>
       <Typography variant="h6" sx={{ marginBottom: "1em" }}>
         Create New Transaction:
       </Typography>
-      <TextField
+      <StyledTextField
         id="name"
         name="name"
         placeholder="Enter transaction name/purpose..."
         value={tx.name}
         onChange={handleChange}
-        sx={{ marginBottom: "2em" }}
       />
-      <TextField
+      <StyledTextField
         id="amount"
         name="amount"
         placeholder="Enter amount..."
@@ -71,19 +71,17 @@ export default function TransactionForm() {
         onChange={handleChange}
         error={errAmount !== ""}
         helperText={errAmount}
-        sx={{ marginBottom: "2em" }}
       />
-      <TextField
+      <StyledTextField
         id="to"
         name="to"
         value={tx.to}
         onChange={handleChange}
         error={errReceiver !== ""}
         helperText={errReceiver}
-        sx={{ marginBottom: "2em" }}
         placeholder="Enter the email of the recepient"
       />
       <Button onClick={handleTransfer}>Transfer Money</Button>
-    </Box>
+    </StyledContainer>
   );
 }
