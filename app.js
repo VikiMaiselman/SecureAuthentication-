@@ -12,7 +12,7 @@ import { verificationRoutes } from "./routes/verification-route.js";
 import { transactionRoutes } from "./routes/transaction-route.js";
 
 const app = express();
-const port = 3010;
+const port = process.env.PORT || 3000;
 
 // CORS (development stage only)
 app.use(
@@ -54,7 +54,7 @@ app.use(verificationRoutes);
 app.use(transactionRoutes);
 
 app // Listening to incoming requests
-  .listen(port, () => console.log(`Server's up. Listening on port ${port}`));
+  .listen(port, "0.0.0.0", () => console.log(`Server's up. Listening on port ${port}`));
 
 // DB connection close
 process.on("SIGINT", async () => {
