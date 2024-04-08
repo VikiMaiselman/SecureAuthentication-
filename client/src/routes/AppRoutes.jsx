@@ -9,6 +9,7 @@ import Logout from "../pages/Logout";
 import TransactionForm from "../pages/TransactionForm";
 
 import { useAuth } from "../contexts/Authentication.context";
+import React from "react";
 
 export default function AppRoutes() {
   const { user } = useAuth();

@@ -55,6 +55,14 @@ export async function checkAuthStatus() {
 export async function createTransaction(txData) {
   try {
     const result = await axios.post(`${URL}/transactions`, txData, { withCredentials: true }, HEADERS);
+    Swal.fire({
+      title: "Success!",
+      text: result.data,
+      icon: "success",
+      confirmButtonText: "Okay",
+      confirmButtonColor: middleBlue,
+      color: darkBlue,
+    });
     return result.data;
   } catch (error) {
     console.error(error);
@@ -75,6 +83,25 @@ export async function getTransactions() {
     const result = await axios.get(`${URL}/transactions`, { withCredentials: true }, HEADERS);
     console.log(result.data);
     return result.data;
+  } catch (error) {
+    console.error(error);
+    Swal.fire({
+      title: "Ooops...",
+      text: error.response.data,
+      icon: "error",
+      confirmButtonText: "Please, try again.",
+      confirmButtonColor: middleBlue,
+      color: darkBlue,
+      iconColor: "red",
+    });
+  }
+}
+
+export async function getUserBalance() {
+  try {
+    const result = await axios.get(`${URL}/balance`, { withCredentials: true }, HEADERS);
+    console.log(result.data);
+    return result.data.balance;
   } catch (error) {
     console.error(error);
     Swal.fire({

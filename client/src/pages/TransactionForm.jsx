@@ -1,7 +1,8 @@
-import { Box, Button, FormLabel, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import React from "react";
 import { useAuth } from "../contexts/Authentication.context";
 import { createTransaction } from "../util/helpers.js";
+import { useNavigate } from "react-router-dom";
 
 export default function TransactionForm() {
   const { user } = useAuth();
@@ -12,10 +13,10 @@ export default function TransactionForm() {
   });
   const [errAmount, setErrAmount] = React.useState("");
   const [errReceiver, setErrReceiver] = React.useState("");
+  const navigate = useNavigate();
 
   const validate = (inputName, inputValue) => {
     if (inputName === "amount") {
-      inputValue = +inputValue;
       if (user.balance < inputValue) setErrAmount(() => "You do not have enough money to proceed with the transaction");
       else setErrAmount(() => "");
     }
@@ -31,13 +32,21 @@ export default function TransactionForm() {
     let { name, value } = e.target;
     validate(name, value);
 
+    if (name === "amount") value = +value;
+
     setTx((prevSt) => {
       return { ...prevSt, [name]: value };
     });
   };
 
-  const handleTransfer = () => {
+  const handleTransfer = async () => {
     createTransaction(tx);
+    setTx(() => ({
+      name: "",
+      amount: "",
+      to: "",
+    }));
+    navigate("/dashboard");
   };
 
   return (

@@ -6,7 +6,7 @@ import { useAuth } from "../contexts/Authentication.context";
 import { getTransactions } from "../util/helpers";
 
 export default function Home() {
-  const { user } = useAuth();
+  const { user, updateBalance } = useAuth();
   const [txs, setTxs] = React.useState();
 
   React.useEffect(() => {
@@ -14,6 +14,7 @@ export default function Home() {
       try {
         const txs = await getTransactions();
         setTxs(() => txs);
+        await updateBalance();
       } catch (error) {
         console.error(error);
       }
