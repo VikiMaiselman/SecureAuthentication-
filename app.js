@@ -22,7 +22,7 @@ app.set("trust proxy", 1);
 app.use(
   cors({
     // origin: "http://localhost:5173", // allows the server to accept request from React app
-    origim: "https://secureauthentication-client-production.up.railway.app",
+    origin: "https://secureauthentication-client-production.up.railway.app",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true, // allows session cookie from browser to pass through
   })
