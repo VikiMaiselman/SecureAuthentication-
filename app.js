@@ -21,7 +21,7 @@ app.set("trust proxy", 1);
 // CORS (development stage only)
 app.use(
   cors({
-    origin: "http://localhost:5173", // allows the server to accept request from React app
+    origin: "*", // allows the server to accept request from React app
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true, // allows session cookie from browser to pass through
   })
