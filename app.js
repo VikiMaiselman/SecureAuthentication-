@@ -46,7 +46,7 @@ app.use(
     // store: new RedisStore(options),
     cookie: {
       httpOnly: false,
-      secure: false,
+      secure: true,
 
       // secure: true, // set this to true if you're using https
       sameSite: "none", // set this to 'none' if your site is served over https
