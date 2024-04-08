@@ -45,7 +45,7 @@ app.use(
     saveUninitialized: false,
     // store: new RedisStore(options),
     cookie: {
-      httpOnly: false,
+      // httpOnly: false,
       secure: true,
 
       // secure: true, // set this to true if you're using https
