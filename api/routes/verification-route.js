@@ -54,15 +54,15 @@ router.post("/sign-up", async (req, res, next) => {
       return res.status(400).json(error.toString());
     }
 
-    try {
-      // verification = await client.verify.v2
-      //   .services(process.env.TWILIO_SERVICE_SID)
-      //   .verifications.create({ to: userPhoneStoredInDB, channel: "sms" });
-      // console.log(verification);
-    } catch (error) {
-      console.log(error);
-      return res.status(401).send(error.toString());
-    }
+    // try {
+    //   verification = await client.verify.v2
+    //     .services(process.env.TWILIO_SERVICE_SID)
+    //     .verifications.create({ to: userPhoneStoredInDB, channel: "sms" });
+    //   console.log(verification);
+    // } catch (error) {
+    //   console.log(error);
+    //   return res.status(401).send(error.toString());
+    // }
 
     verification = { status: "pending" };
     return res.json(verification.status);
@@ -108,6 +108,10 @@ router.get("/logout", (req, res, next) => {
 router.get("/auth-status", async (req, res) => {
   console.log(req.user);
   res.send({ isAuthenticated: req.isAuthenticated(), user: req.user });
+});
+
+router.get("/balance", async (req, res) => {
+  res.send({ balance: req.user?.balance });
 });
 
 // export const getCurrentUser = async (req, res) => {

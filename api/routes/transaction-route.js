@@ -15,14 +15,13 @@ router.get("/transactions", async (req, res) => {
 
 router.post("/transactions", async (req, res) => {
   const { name, amount, to } = req.body;
-  console.log(name, amount, to);
   try {
     const userTo = await User.findOne({ username: to });
     const userFrom = req.user;
 
     if (userTo === null) throw new Error("Check the reciepient data to be correct.");
-    if (userFrom === null) throw new Error("Please, sign up. YOu have been logged out.");
-    console.log(userTo, userFrom);
+    if (userFrom === null) throw new Error("Please, sign up. You have been logged out.");
+
     const newTx = new Transaction({
       name: name,
       amount: amount,
@@ -37,7 +36,7 @@ router.post("/transactions", async (req, res) => {
     await User.findOneAndUpdate({ username: to }, { balance: updateTo });
     await User.findOneAndUpdate({ username: userFrom.username }, { balance: updateFrom });
 
-    return res.send(true);
+    return res.send("Transaction successfully created!");
   } catch (error) {
     console.error(error);
     return res.status(400).send("Transaction was not successful. " + error);
