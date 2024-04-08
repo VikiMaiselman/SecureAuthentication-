@@ -48,8 +48,8 @@ app.use(
       httpOnly: false,
       // secure: true,
 
-      // secure: true, // set this to true if you're using https
-      // sameSite: "none", // set this to 'none' if your site is served over https
+      secure: true, // set this to true if you're using https
+      sameSite: "lax", // set this to 'none' if your site is served over https
       // other cookie settings
     },
   })
