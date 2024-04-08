@@ -12,6 +12,7 @@ import {
   AuthPageContainer,
   Overlay,
   PageHeaderText,
+  PaleStyledButton,
   StyledButton,
   StyledFormLabel,
   StyledTab,
@@ -20,13 +21,14 @@ import {
 import { useAuth } from "../contexts/Authentication.context.jsx";
 
 export default function Auth() {
-  const { checkStatus, isBeingVerified, signup } = useAuth();
+  const { checkStatus, isBeingVerified, isApproved, signup } = useAuth();
   const [activeTab, setActiveTab] = React.useState(0);
   const [userData, setUserData] = React.useState({
     email: "",
     password: "",
     phone: "",
   });
+  const [isTwilioError, setIsTwilioError] = React.useState(false);
   const navigate = useNavigate();
 
   const handleChangeTab = (e, newValue) => {
@@ -56,11 +58,28 @@ export default function Auth() {
   const handleClick = async () => {
     const data = composeDataForBackend(userData, activeTab);
     const response = await signup(data);
+
     if (response === "pending") {
       isBeingVerified(response);
       return navigate("/verification", { state: data, replace: true });
     }
-    // show error message
+
+    // if twilio didn't work
+    if (response === "isTwilioError") {
+      setIsTwilioError(() => true);
+    }
+    // other error
+    return navigate("/sign-up");
+  };
+
+  const handleClickNoTwilio = async () => {
+    const data = composeDataForBackend(userData, activeTab, false);
+    const response = await signup(data);
+
+    if (response === "approved") {
+      isApproved(response);
+      return navigate("/");
+    }
     return navigate("/sign-up");
   };
 
@@ -117,6 +136,10 @@ export default function Auth() {
         <StyledButton variant="contained" onClick={handleClick}>
           {activeTab === 0 ? "Sign Up" : "Sign In"}
         </StyledButton>
+        {/* <PaleStyledButton variant="contained" size="small" onClick={handleClickNoTwilio} disabled={!isTwilioError}> */}
+        <PaleStyledButton variant="contained" size="small" onClick={handleClickNoTwilio}>
+          {activeTab === 0 ? "Sign Up (no Twilio)" : "Sign In (no Twilio)"}
+        </PaleStyledButton>
       </AuthForm>
     </AuthPageContainer>
   );

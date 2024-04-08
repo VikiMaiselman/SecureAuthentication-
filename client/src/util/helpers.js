@@ -4,13 +4,24 @@ import { URL, HEADERS } from "./config.js";
 import Swal from "sweetalert2";
 import { darkBlue, middleBlue } from "../global-styles/Colors.js";
 
-export function composeDataForBackend(userData, activeTab) {
+export function composeDataForBackend(userData, activeTab, useTwilio = true) {
   return {
     ...userData,
     username: userData.email,
     phone: `+${userData.phone}`,
     action: `${activeTab === 0 ? "signup" : "login"}`,
+    useTwilio: useTwilio,
   };
+}
+
+export function getDateLabel(transactionDate) {
+  const calcDaysPassed = (date1, date2) => Math.trunc(Math.abs(date2 - date1) / (24 * 3600 * 1000));
+  const daysPassed = calcDaysPassed(new Date(), transactionDate);
+
+  if (daysPassed === 0) return "Today";
+  if (daysPassed === 1) return "Yesterday";
+  if (daysPassed <= 7) return `${daysPassed} days ago`;
+  return `${daysPassed.getDate()}`.padStart(2, 0);
 }
 
 export async function signUp(data) {
@@ -52,17 +63,10 @@ export async function checkAuthStatus() {
   }
 }
 
-export async function createTransaction(txData) {
+export async function getTransactions() {
   try {
-    const result = await axios.post(`${URL}/transactions`, txData, { withCredentials: true }, HEADERS);
-    Swal.fire({
-      title: "Success!",
-      text: result.data,
-      icon: "success",
-      confirmButtonText: "Okay",
-      confirmButtonColor: middleBlue,
-      color: darkBlue,
-    });
+    const result = await axios.get(`${URL}/transactions`, { withCredentials: true }, HEADERS);
+    console.log(result.data);
     return result.data;
   } catch (error) {
     console.error(error);
@@ -78,10 +82,19 @@ export async function createTransaction(txData) {
   }
 }
 
-export async function getTransactions() {
+export async function createTransaction(txData) {
   try {
-    const result = await axios.get(`${URL}/transactions`, { withCredentials: true }, HEADERS);
-    console.log(result.data);
+    const result = await axios.post(`${URL}/transactions`, txData, { withCredentials: true }, HEADERS);
+    Swal.fire({
+      title: "Success!",
+      text: result.data,
+      icon: "success",
+      confirmButtonText: "Okay",
+      confirmButtonColor: middleBlue,
+      color: darkBlue,
+    });
+
+    await getTransactions();
     return result.data;
   } catch (error) {
     console.error(error);

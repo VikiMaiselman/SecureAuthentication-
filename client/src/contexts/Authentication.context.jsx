@@ -14,11 +14,11 @@ export default function AuthProvider({ children }) {
     id: ",",
   });
   const [balance, setBalance] = React.useState();
+  let isTwilioError = false;
 
   const checkStatus = async () => {
     try {
       const result = await checkAuthStatus();
-      console.log(result);
       setUser((prevSt) => {
         return {
           ...prevSt,
@@ -54,10 +54,6 @@ export default function AuthProvider({ children }) {
     updUserStatus();
   }, []);
 
-  const checkBalance = () => {
-    return balance;
-  };
-
   const updateBalance = async () => {
     try {
       const newBalance = await getUserBalance();
@@ -83,15 +79,22 @@ export default function AuthProvider({ children }) {
     try {
       return await signUp(data);
     } catch (error) {
+      let cancelText = "Try again.";
+      if (error.response.data.message?.startsWith("TWILIO:") || error.response.data?.startsWith("TWILIO:")) {
+        cancelText = "Authenticate w/o OTP (this will still be safe)";
+      }
       Swal.fire({
         title: "Ooops...",
         text: error.response.data.message || error.response.data,
         icon: "error",
-        confirmButtonText: "Please, try again.",
-        confirmButtonColor: middleBlue,
+        cancelButtonText: cancelText,
+        cancelButtonColor: middleBlue,
         color: darkBlue,
         iconColor: "red",
+      }).then(() => {
+        isTwilioError = true;
       });
+      return "isTwilioError";
     }
   };
 
@@ -134,7 +137,17 @@ export default function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, checkStatus, balance, updateBalance, isBeingVerified, isApproved, signup, verify, logout }}
+      value={{
+        user,
+        checkStatus,
+        balance,
+        updateBalance,
+        isBeingVerified,
+        isApproved,
+        signup,
+        verify,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -1,25 +1,29 @@
-import { CardActions, CardContent, Typography } from "@mui/material";
 import React from "react";
+import { CardActions, CardContent, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { DigitSlot, StyledButton, StyledCard, StyledHeader, VerificationBackground } from "./VerificationStyles";
 import { useAuth } from "../contexts/Authentication.context";
 
 export default function Verification() {
+  /* state, hooks */
   const [otpDigits, setOtpDigits] = React.useState(Array.from({ length: 6 }, () => ""));
   const inputRefs = React.useRef([]);
-  const { isApproved, verify } = useAuth();
+
+  /* location & navigation */
   const location = useLocation();
   const navigate = useNavigate();
 
-  // inputRefs.current[0].focus();
+  /* global-context */
+  const { isApproved, verify } = useAuth();
 
+  /* event handlers */
   const handleChange = (idx, value) => {
     const updatedDigits = [...otpDigits];
     updatedDigits[idx] = value;
     setOtpDigits(updatedDigits);
 
-    // Move cursor to the next input (if not at the last slot)
+    // Moves cursor to the next input (if not at the last slot)
     if (idx < 5 && value.length === 1) {
       inputRefs.current[idx + 1].focus();
     }
@@ -40,7 +44,7 @@ export default function Verification() {
       isApproved(response);
       return navigate("/");
     }
-    // show error message
+    // error case
     return navigate("/sign-up");
   };
 

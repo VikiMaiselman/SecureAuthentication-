@@ -5,7 +5,9 @@ import { User, Transaction } from "../dbs/mongo-db.js";
 
 router.get("/transactions", async (req, res) => {
   try {
-    const txs = await Transaction.find({ $or: [{ to: req.user }, { from: req.user }] });
+    const txs = await Transaction.find({ $or: [{ to: req.user }, { from: req.user }] })
+      .populate("to")
+      .populate("from");
     return res.json(txs);
   } catch (error) {
     console.error(error);

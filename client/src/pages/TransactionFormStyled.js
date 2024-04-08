@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Box, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 
 export const StyledContainer = styled(Box)({
   width: "100%",
@@ -10,4 +10,9 @@ export const StyledContainer = styled(Box)({
 
 export const StyledTextField = styled(TextField)({
   marginBottom: "2em",
+});
+
+export const StyledButton = styled(Button)({
+  transition: "all 0.4s ease-in-out",
+  "&:hover": { transform: "scale(1.1)" },
 });

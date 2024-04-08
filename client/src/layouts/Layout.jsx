@@ -9,9 +9,8 @@ export const LayoutContainer = styled("div")({
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "flex-start",
-  //   transform: "translate(-50%, -50%)",
-  "@media (max-width: 800px)": {
-    // fontSize: "2.5rem",
+  "@media (max-width: 768px)": {
+    alignItems: "center",
   },
   "@media (max-width: 300px)": {
     // fontSize: "2rem",

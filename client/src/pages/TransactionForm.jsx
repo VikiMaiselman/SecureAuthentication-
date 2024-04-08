@@ -1,13 +1,13 @@
 import React from "react";
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
 import { useAuth } from "../contexts/Authentication.context";
 import { createTransaction } from "../util/helpers.js";
 import { useNavigate } from "react-router-dom";
-import { StyledContainer, StyledTextField } from "./TransactionFormStyled";
+import { StyledButton, StyledContainer, StyledTextField } from "./TransactionFormStyled";
 
 export default function TransactionForm() {
-  const { user } = useAuth();
+  const { user, balance } = useAuth();
   const [tx, setTx] = React.useState({
     name: "",
     amount: "",
@@ -19,21 +19,31 @@ export default function TransactionForm() {
 
   const validate = (inputName, inputValue) => {
     if (inputName === "amount") {
-      if (user.balance < inputValue) setErrAmount(() => "You do not have enough money to proceed with the transaction");
-      else setErrAmount(() => "");
+      if (isNaN(inputValue)) {
+        setErrAmount(() => "Please, enter a valid number");
+        return false;
+      }
+      if (balance < inputValue) {
+        setErrAmount(() => "You do not have enough money to proceed with the transaction");
+        return false;
+      } else setErrAmount(() => "");
     }
 
     if (inputName === "to") {
-      if (user.username === inputValue)
+      if (user.username === inputValue) {
         setErrReceiver(() => "The emails of the sender and the reciever must be different");
-      else setErrReceiver(() => "");
+        return false;
+      } else setErrReceiver(() => "");
     }
+
+    return true;
   };
 
   const handleChange = (e) => {
     let { name, value } = e.target;
 
-    validate(name, value);
+    const isValid = validate(name, value);
+    if (!isValid) return;
     if (name === "amount") value = +value;
     setTx((prevSt) => {
       return { ...prevSt, [name]: value };
@@ -66,7 +76,7 @@ export default function TransactionForm() {
         id="amount"
         name="amount"
         placeholder="Enter amount..."
-        type="number"
+        // type="number"
         value={tx.amount}
         onChange={handleChange}
         error={errAmount !== ""}
@@ -81,7 +91,7 @@ export default function TransactionForm() {
         helperText={errReceiver}
         placeholder="Enter the email of the recepient"
       />
-      <Button onClick={handleTransfer}>Transfer Money</Button>
+      <StyledButton onClick={handleTransfer}>Transfer Money</StyledButton>
     </StyledContainer>
   );
 }

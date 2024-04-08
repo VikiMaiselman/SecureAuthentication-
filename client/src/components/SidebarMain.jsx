@@ -5,9 +5,6 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 
-import { DRAWER_WIDTH } from "../util/config.js";
-
-import { superLightBLue, lightBlue, middleBlue } from "../global-styles/Colors.js";
 import {
   BalanceInfo,
   StyledDrawer,

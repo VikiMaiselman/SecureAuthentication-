@@ -1,19 +1,26 @@
 import React from "react";
-import { Box, List, ListItem, ListItemButton, ListItemIcon } from "@mui/material";
+import { Box, List, ListItemButton, ListItemIcon } from "@mui/material";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
 import { useAuth } from "../contexts/Authentication.context";
-import { getTransactions } from "../util/helpers";
-import { StyledListItemText, StyledSubheader, StyledTransaction } from "./HomeStyles";
+import { getDateLabel, getTransactions } from "../util/helpers";
+import {
+  StyledListItem,
+  StyledListItemText,
+  StyledSpan,
+  StyledSubheader,
+  StyledTransaction,
+} from "./TransactionsStyles";
 
-export default function Home() {
-  const { user, updateBalance } = useAuth();
+export default function Transactions() {
+  const { user, updateBalance, balance } = useAuth();
   const [txs, setTxs] = React.useState();
 
   React.useEffect(() => {
     const getTxsToDisplay = async () => {
       try {
         const txs = await getTransactions();
+        console.log(txs);
         setTxs(() => txs);
         await updateBalance();
       } catch (error) {
@@ -21,21 +28,24 @@ export default function Home() {
       }
     };
     getTxsToDisplay();
-  }, []);
+  }, [balance]);
 
   return (
     <Box width={"100%"} my={4}>
       <StyledSubheader variant="h6">
-        Recent Transactions From: <span style={{ color: "#F09479" }}>Today</span>
+        Recent Transactions From: <StyledSpan>Today</StyledSpan>
       </StyledSubheader>
 
       {React.Children.toArray(
         txs?.map((tx) => {
-          const amountTodisplay = tx.to === user.id ? `+${tx.amount}` : `-${tx.amount}`;
-          const colorOfMoney = tx.to === user.id ? "green" : "red";
+          const amountTodisplay = tx.to._id === user.id ? `+${tx.amount}` : `-${tx.amount}`;
+          const colorOfMoney = tx.to._id === user.id ? "green" : "red";
+          const dateLabel = getDateLabel(new Date(tx.when));
+          const toOrFromWhom = tx.to._id === user.id ? `To ${user.username}` : `From ${tx.from.username}`;
+
           return (
             <List>
-              <ListItem>
+              <StyledListItem>
                 <ListItemButton>
                   <ListItemIcon>
                     <ReceiptLongIcon />
@@ -43,10 +53,11 @@ export default function Home() {
                   <StyledTransaction>
                     <StyledListItemText primary={tx.name} />
                     <StyledListItemText sx={{ color: colorOfMoney }} primary={`${amountTodisplay} $`} />
-                    <StyledListItemText primary={tx.to === user.id ? user.username : tx.to} />
+                    <StyledListItemText primary={toOrFromWhom} />
+                    <StyledListItemText primary={dateLabel} />
                   </StyledTransaction>
                 </ListItemButton>
-              </ListItem>
+              </StyledListItem>
             </List>
           );
         })
