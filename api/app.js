@@ -11,10 +11,6 @@ import { db, initDb as initializeMongoDatabase } from "./dbs/mongo-db.js";
 import { verificationRoutes } from "./routes/verification-route.js";
 import { transactionRoutes } from "./routes/transaction-route.js";
 
-// const accountSid = process.env.TWILIO_ACCOUNT_SID;
-// const authToken = process.env.TWILIO_AUTH_TOKEN;
-// const client = twilio(accountSid, authToken);
-
 const app = express();
 const port = 3010;
 

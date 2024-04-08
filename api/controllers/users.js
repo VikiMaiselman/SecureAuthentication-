@@ -10,7 +10,6 @@ import { User } from "../dbs/mongo-db.js";
 export const signUp = async (req, res) => {
   const { username, password, phone, action, useTwilio } = req.body;
 
-  // a method provided by the package, abstracts away our interaction with DB
   if (action === "signup") {
     let verification;
     if (useTwilio) {
