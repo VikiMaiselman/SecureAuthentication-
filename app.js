@@ -6,8 +6,6 @@ import cors from "cors";
 
 import session from "express-session";
 import passport from "passport";
-// import redis from "connect-redis";
-// const RedisStore = redis(session);
 
 import { db, initDb as initializeMongoDatabase } from "./dbs/mongo-db.js";
 import { verificationRoutes } from "./routes/verification-route.js";
@@ -46,10 +44,8 @@ app.use(
     secret: process.env.PASSPORT_SECRET,
     resave: false,
     saveUninitialized: false,
-    // store: new RedisStore(options),
     cookie: {
       httpOnly: false,
-      // secure: true,
       maxAge: 1000 * 60 * 10,
       secure: true, // set this to true if you're using https
       sameSite: "none", // set this to 'none' if your site is served over https

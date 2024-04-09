@@ -19,7 +19,12 @@ export const signUp = async (req, res) => {
           .verifications.create({ to: phone, channel: "sms" });
       } catch (error) {
         console.log(error);
-        return res.status(400).send(error.toString());
+        let errMessage = error.toString();
+        if (error.toString().includes("phone number is unverified")) {
+          errMessage =
+            "Your number is not verified with my Twilio account. Either try to use my phone number (but I will get the verification code) or authenticate w/o Twilio (the button is now available). For more options see README.md";
+        }
+        return res.status(400).send(errMessage);
       }
     }
 
