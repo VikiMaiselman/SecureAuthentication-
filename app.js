@@ -7,7 +7,7 @@ import cors from "cors";
 import session from "express-session";
 import passport from "passport";
 
-import { db, initDb as initializeMongoDatabase } from "./dbs/mongo-db.js";
+import { initDb as initializeMongoDatabase } from "./dbs/mongo-db.js";
 import { verificationRoutes } from "./routes/verification-route.js";
 import { transactionRoutes } from "./routes/transaction-route.js";
 
@@ -45,11 +45,11 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
+      // uncomment for PRODUCTION
       httpOnly: false,
       maxAge: 1000 * 60 * 10,
       secure: true, // set this to true if you're using https
       sameSite: "none", // set this to 'none' if your site is served over https
-      // other cookie settings
     },
   })
 );
